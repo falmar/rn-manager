@@ -18,6 +18,29 @@ export default (state = initialState, action) => {
         ...state,
         [action.payload.key]: action.payload.value
       }
+
+    case types.SIGNIN_START:
+      return {
+        ...state,
+        loading: true,
+        error: ''
+      }
+    case types.SIGNIN_FULFILLED:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+        email: '',
+        password: ''
+      }
+    case types.SIGNIN_REJECTED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        password: ''
+      }
+
     default:
       return state
   }

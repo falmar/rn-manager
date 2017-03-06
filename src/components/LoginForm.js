@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react'
+import {Text, StyleSheet} from 'react-native'
 import {connect} from 'react-redux'
 
 import * as actions from '../store/actions/auth'
 
-import {Card, CardSection, Input, Button} from './common'
+import {Card, CardSection, Input, Button, Spinner} from './common'
 
 class LoginForm extends Component {
   constructor (props) {
@@ -24,10 +25,32 @@ class LoginForm extends Component {
     this.props.onSubmit({email, password})
   }
 
+  renderButton () {
+    if (this.props.loading) {
+      return <Spinner />
+    }
+
+    return (
+      <Button
+        text='Log In'
+        onPress={this.onSubmit}
+      />
+    )
+  }
+
+  renderError () {
+    const {error} = this.props
+    const {errorStyle} = styles
+
+    if (!error) {
+      return null
+    }
+
+    return <Text style={errorStyle}>{error}</Text>
+  }
+
   render () {
     const {email, password} = this.props
-
-    console.log(email, password)
 
     return (
       <Card>
@@ -50,16 +73,25 @@ class LoginForm extends Component {
            />
         </CardSection>
 
+        {this.renderError()}
+
         <CardSection>
-          <Button
-            text='Log In'
-            onPress={this.onSubmit}
-          />
+          {this.renderButton()}
         </CardSection>
       </Card>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  errorStyle: {
+    color: 'red',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingTop: 5,
+    paddingBottom: 5
+  }
+})
 
 LoginForm.propTypes = {
   email: PropTypes.string.isRequired,
@@ -79,7 +111,7 @@ const mapStateToPros = ({auth}) => ({
 
 const mapDispatchToProps = dispatch => ({
   changeText: payload => dispatch(actions.changeText(payload)),
-  onSubmit: payload => dispatch(actions.onSubmit(payload))
+  onSubmit: payload => dispatch(actions.signIn(payload))
 })
 
 export default connect(mapStateToPros, mapDispatchToProps)(LoginForm)

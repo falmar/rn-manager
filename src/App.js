@@ -18,7 +18,7 @@ class App extends Component {
       databaseURL: 'https://manager-435e5.firebaseio.com',
       storageBucket: '',
       messagingSenderId: '734949406289'
-    }, 'rn-manager')
+    })
   }
 
   componentDidMount () {
@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   componentWillUnmount () {
-    firebase.app('rn-manager').delete().then(() => {
+    firebase.app().delete().then(() => {
 
     })
   }
