@@ -1,0 +1,1 @@
+export const CHANGE_TEXT = 'LOGIN_CHANGE_TEXT'

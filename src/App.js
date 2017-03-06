@@ -6,6 +6,7 @@ import firebase from 'firebase'
 import configureStore from './store'
 
 import {Header} from './components/common'
+import LoginForm from './components/LoginForm'
 
 const store = configureStore({})
 
@@ -34,7 +35,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <View style={{flex: 1}}>
-          <Header title='Manager Login' />
+          <Header title='Manager' />
+          <LoginForm />
         </View>
       </Provider>
     )
