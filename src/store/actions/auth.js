@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import {Actions} from 'react-native-router-flux'
 
 import * as types from '../constants/auth'
 
@@ -12,10 +13,14 @@ const loginStart = () => ({
   type: types.SIGNIN_START
 })
 
-const loginFulfilled = dispatch => user => dispatch({
-  type: types.SIGNIN_FULFILLED,
-  payload: user
-})
+const loginFulfilled = dispatch => user => {
+  dispatch({
+    type: types.SIGNIN_FULFILLED,
+    payload: user
+  })
+
+  Actions.employeeList()
+}
 
 const loginRejected = (dispatch, error) => () => dispatch({
   type: types.SIGNIN_REJECTED,

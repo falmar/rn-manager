@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
-import {View} from 'react-native'
 import {Provider} from 'react-redux'
 import firebase from 'firebase'
 
 import configureStore from './store'
 
-import {Header} from './components/common'
-import LoginForm from './components/LoginForm'
+import Router from './Router'
 
 const store = configureStore({})
 
@@ -34,10 +32,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <View style={{flex: 1}}>
-          <Header title='Manager' />
-          <LoginForm />
-        </View>
+        <Router />
       </Provider>
     )
   }
