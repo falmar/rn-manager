@@ -12,12 +12,12 @@ const loginStart = () => ({
   type: types.SIGNIN_START
 })
 
-const loginFulfilled = user => ({
+const loginFulfilled = dispatch => user => dispatch({
   type: types.SIGNIN_FULFILLED,
   payload: user
 })
 
-const loginRejected = error => ({
+const loginRejected = (dispatch, error) => () => dispatch({
   type: types.SIGNIN_REJECTED,
   payload: error
 })
@@ -29,11 +29,12 @@ export const signIn = payload => {
 
     firebase.auth()
     .signInWithEmailAndPassword(payload.email, payload.password)
-    .then(user => {
-      dispatch(loginFulfilled(user))
-    })
+    .then(loginFulfilled(dispatch))
     .catch(() => {
-      dispatch(loginRejected('Authentication Failed.'))
+      firebase.auth()
+      .createUserWithEmailAndPassword(payload.email, payload.password)
+      .then(loginFulfilled(dispatch))
+      .catch(loginRejected(dispatch, 'Authentication Failed.'))
     })
   }
 }
