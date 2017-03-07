@@ -6,26 +6,33 @@ import * as actions from '../store/actions/employeeForm'
 import {Card, CardSection, Button} from './common'
 import EmployeeForm from './EmployeeForm'
 
-class EmployeeCreate extends Component {
+class EmployeeUpdate extends Component {
   constructor (props) {
     super(props)
 
     this.onSave = this.onSave.bind(this)
+    this.onFire = this.onFire.bind(this)
   }
 
   componentWillMount () {
-    const {changeText} = this.props
+    const {employee, changeText} = this.props
 
-    changeText({key: 'employeeName', value: ''})
-    changeText({key: 'phone', value: ''})
-    changeText({key: 'shift', value: 1})
+    if (employee) {
+      changeText({key: 'employeeName', value: employee.employeeName})
+      changeText({key: 'phone', value: employee.phone})
+      changeText({key: 'shift', value: employee.shift})
+    }
   }
 
   onSave () {
-    const {employeeName, phone, shift} = this.props
-    const {saveEmployee} = this.props
+    // const {employeeName, phone, shift} = this.props
+    // const {saveEmployee} = this.props
 
-    saveEmployee({employeeName, phone, shift})
+    // saveEmployee({employeeName, phone, shift})
+  }
+
+  onFire () {
+
   }
 
   render () {
@@ -38,17 +45,22 @@ class EmployeeCreate extends Component {
         <CardSection>
           <Button text='Save' onPress={this.onSave} />
         </CardSection>
+
+        <CardSection>
+          <Button text='Fire' onPress={this.onFire} />
+        </CardSection>
       </Card>
     )
   }
 }
 
-EmployeeCreate.propTypes = {
+EmployeeUpdate.propTypes = {
   employeeName: PropTypes.string,
   phone: PropTypes.string,
   shift: PropTypes.number,
   saveEmployee: PropTypes.func,
-  changeText: PropTypes.func
+  changeText: PropTypes.func,
+  employee: PropTypes.object
 }
 
 const mapStateToProps = ({employeeForm}) => ({
@@ -62,4 +74,4 @@ const mapDispatchToProps = {
   saveEmployee: actions.saveEmployee
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeeCreate)
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeUpdate)
