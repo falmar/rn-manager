@@ -1,0 +1,1 @@
+export const CHANGE_TEXT = 'EMPLOYEE_FORM_CHANGE_TEXT'

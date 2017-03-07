@@ -1,6 +1,5 @@
 import React from 'react'
 import {Scene, Router, Actions} from 'react-native-router-flux'
-import {connect} from 'react-redux'
 
 import LoginForm from './components/LoginForm'
 import EmployeeList from './components/EmployeeList'
