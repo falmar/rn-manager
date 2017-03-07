@@ -3,7 +3,7 @@ import * as types from '../constants/employeeForm'
 const initialState = {
   employeeName: '',
   phone: '',
-  shift: ''
+  shift: 1
 }
 
 export default (state = initialState, action) => {
