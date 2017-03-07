@@ -1,6 +1,7 @@
 import * as types from '../constants/employeeForm'
 
 const initialState = {
+  uid: '',
   employeeName: '',
   phone: '',
   shift: 1,
@@ -28,6 +29,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        uid: '',
         employeeName: '',
         phone: '',
         shift: 1

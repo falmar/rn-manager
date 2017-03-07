@@ -16,6 +16,7 @@ class EmployeeCreate extends Component {
   componentWillMount () {
     const {changeText} = this.props
 
+    changeText({key: 'uid', value: ''})
     changeText({key: 'employeeName', value: ''})
     changeText({key: 'phone', value: ''})
     changeText({key: 'shift', value: 1})
@@ -59,7 +60,7 @@ const mapStateToProps = ({employeeForm}) => ({
 
 const mapDispatchToProps = {
   changeText: actions.changeText,
-  saveEmployee: actions.saveEmployee
+  saveEmployee: actions.createEmployee
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeCreate)

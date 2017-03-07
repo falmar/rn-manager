@@ -18,6 +18,7 @@ class EmployeeUpdate extends Component {
     const {employee, changeText} = this.props
 
     if (employee) {
+      changeText({key: 'uid', value: employee.uid})
       changeText({key: 'employeeName', value: employee.employeeName})
       changeText({key: 'phone', value: employee.phone})
       changeText({key: 'shift', value: employee.shift})
@@ -25,10 +26,10 @@ class EmployeeUpdate extends Component {
   }
 
   onSave () {
-    // const {employeeName, phone, shift} = this.props
-    // const {saveEmployee} = this.props
+    const {uid, employeeName, phone, shift} = this.props
+    const {saveEmployee} = this.props
 
-    // saveEmployee({employeeName, phone, shift})
+    saveEmployee({uid, employeeName, phone, shift})
   }
 
   onFire () {
@@ -55,6 +56,7 @@ class EmployeeUpdate extends Component {
 }
 
 EmployeeUpdate.propTypes = {
+  uid: PropTypes.string,
   employeeName: PropTypes.string,
   phone: PropTypes.string,
   shift: PropTypes.number,
@@ -64,6 +66,7 @@ EmployeeUpdate.propTypes = {
 }
 
 const mapStateToProps = ({employeeForm}) => ({
+  uid: employeeForm.uid,
   employeeName: employeeForm.employeeName,
   phone: employeeForm.phone,
   shift: employeeForm.shift
@@ -71,7 +74,7 @@ const mapStateToProps = ({employeeForm}) => ({
 
 const mapDispatchToProps = {
   changeText: actions.changeText,
-  saveEmployee: actions.saveEmployee
+  saveEmployee: actions.updateEmployee
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeUpdate)

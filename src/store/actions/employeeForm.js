@@ -28,13 +28,31 @@ const saveEmployeeRejected = error => {
   }
 }
 
-export const saveEmployee = payload => dispatch => {
+export const createEmployee = payload => dispatch => {
   const {currentUser} = firebase.auth()
 
   dispatch(saveEmployeStart())
 
   firebase.database().ref(`/users/${currentUser.uid}/employees`)
   .push(payload)
+  .then(response => {
+    dispatch(saveEmployeeFulfilled(response))
+
+    Actions.employeeList({type: 'reset'})
+  })
+  .catch(saveEmployeeRejected(dispatch))
+}
+
+export const updateEmployee = payload => dispatch => {
+  const {uid} = payload
+  const {currentUser} = firebase.auth()
+
+  delete payload.uid
+
+  dispatch(saveEmployeStart())
+
+  firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+  .set(payload)
   .then(response => {
     dispatch(saveEmployeeFulfilled(response))
 

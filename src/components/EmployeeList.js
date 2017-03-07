@@ -32,15 +32,9 @@ class EmployeeList extends Component {
 
     this.setState({
       dataSource: ds.cloneWithRows(
-        Object.keys(employees).map(key => ({...employees[key], id: key}))
+        Object.keys(employees).map(key => ({...employees[key], uid: key}))
       )
     })
-  }
-
-  renderEmployees () {
-    const {employees} = this.props
-
-    return Object.keys(employees).map(key => ({...employees[key], id: key}))
   }
 
   renderRow (employee) {

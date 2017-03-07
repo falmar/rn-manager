@@ -9,7 +9,7 @@ export default (state = initialState, action) => {
     case types.FETCH_EMPLOYEES_FULFILLED:
       return {
         ...state,
-        employees: action.payload
+        employees: action.payload || {}
       }
     default:
       return state
