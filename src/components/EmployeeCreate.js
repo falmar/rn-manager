@@ -11,12 +11,20 @@ class EmployeeCreate extends Component {
     super(props)
 
     this.onChangeText = this.onChangeText.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   onChangeText (key) {
     return text => {
       this.props.changeText({key, value: text})
     }
+  }
+
+  onSubmit () {
+    const {employeeName, phone, shift} = this.props
+    const {saveEmployee} = this.props
+
+    saveEmployee({employeeName, phone, shift})
   }
 
   render () {
@@ -64,7 +72,7 @@ class EmployeeCreate extends Component {
         </CardSection>
 
         <CardSection>
-          <Button text='Save' />
+          <Button text='Save' onPress={this.onSubmit} />
         </CardSection>
 
       </Card>
@@ -88,7 +96,8 @@ EmployeeCreate.propTypes = {
   employeeName: PropTypes.string,
   phone: PropTypes.string,
   shift: PropTypes.number,
-  changeText: PropTypes.func
+  changeText: PropTypes.func,
+  saveEmployee: PropTypes.func
 }
 
 const mapStateToProps = ({employeeForm}) => ({
@@ -97,8 +106,9 @@ const mapStateToProps = ({employeeForm}) => ({
   shift: employeeForm.shift
 })
 
-const mapDispatchToProps = dispatch => ({
-  changeText: text => dispatch(actions.changeText(text))
-})
+const mapDispatchToProps = {
+  changeText: actions.changeText,
+  saveEmployee: actions.saveEmployee
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeCreate)
