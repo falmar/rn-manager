@@ -1,29 +1,59 @@
 import React, {Component, PropTypes} from 'react'
-import {View, Text} from 'react-native'
+import {ListView} from 'react-native'
 import {connect} from 'react-redux'
 
 import * as actions from '../store/actions/employeeList'
 
+import EmployeeListItem from './EmployeeListItem'
+
 class EmployeeList extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      dataSource: {}
+    }
+  }
+
   componentWillMount () {
     this.props.fetchEmployees()
+
+    this.createDataSource(this.props.employees)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.createDataSource(nextProps.employees)
+  }
+
+  createDataSource (employees) {
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    })
+
+    this.setState({
+      dataSource: ds.cloneWithRows(
+        Object.keys(employees).map(key => ({...employees[key], id: key}))
+      )
+    })
   }
 
   renderEmployees () {
     const {employees} = this.props
 
-    return Object.keys(
-      employees
-    ).map(key => {
-      return <Text key={key}>{employees[key].employeeName}</Text>
-    })
+    return Object.keys(employees).map(key => ({...employees[key], id: key}))
+  }
+
+  renderRow (employee) {
+    return <EmployeeListItem employee={employee} />
   }
 
   render () {
     return (
-      <View>
-        {this.renderEmployees()}
-      </View>
+      <ListView
+        enableEmptySections
+        dataSource={this.state.dataSource}
+        renderRow={this.renderRow}
+       />
     )
   }
 }
