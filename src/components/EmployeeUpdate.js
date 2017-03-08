@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import Communication from 'react-native-communications'
 
 import * as actions from '../store/actions/employeeForm'
 
@@ -11,6 +12,7 @@ class EmployeeUpdate extends Component {
     super(props)
 
     this.onSave = this.onSave.bind(this)
+    this.onText = this.onText.bind(this)
     this.onFire = this.onFire.bind(this)
   }
 
@@ -32,6 +34,36 @@ class EmployeeUpdate extends Component {
     saveEmployee({uid, employeeName, phone, shift})
   }
 
+  onText () {
+    let shiftName
+
+    switch (this.props.shift) {
+      case 1:
+        shiftName = 'Monday'
+        break
+      case 2:
+        shiftName = 'Tuesday'
+        break
+      case 3:
+        shiftName = 'Wednesday'
+        break
+      case 4:
+        shiftName = 'Thursday'
+        break
+      case 5:
+        shiftName = 'Friday'
+        break
+      case 6:
+        shiftName = 'Saturday'
+        break
+      default:
+        shiftName = 'Sunday'
+        break
+    }
+
+    Communication.text(this.props.phone, `Your shift is on: ${shiftName}`)
+  }
+
   onFire () {
 
   }
@@ -45,6 +77,10 @@ class EmployeeUpdate extends Component {
 
         <CardSection>
           <Button text='Save' onPress={this.onSave} />
+        </CardSection>
+
+        <CardSection>
+          <Button text='Text Schedule' onPress={this.onText} />
         </CardSection>
 
         <CardSection>
