@@ -4,16 +4,24 @@ import Communication from 'react-native-communications'
 
 import * as actions from '../store/actions/employeeForm'
 
-import {Card, CardSection, Button} from './common'
+import {getWeekDay} from '../util'
+
+import {Card, CardSection, Button, Confirm} from './common'
 import EmployeeForm from './EmployeeForm'
 
 class EmployeeUpdate extends Component {
   constructor (props) {
     super(props)
 
+    this.state = {
+      modalOpen: false
+    }
+
     this.onSave = this.onSave.bind(this)
     this.onText = this.onText.bind(this)
-    this.onFire = this.onFire.bind(this)
+    this.onAcceptFire = this.onAcceptFire.bind(this)
+    this.onDeclineFire = this.onDeclineFire.bind(this)
+    this.onRequestOpen = this.onRequestOpen.bind(this)
   }
 
   componentWillMount () {
@@ -35,37 +43,22 @@ class EmployeeUpdate extends Component {
   }
 
   onText () {
-    let shiftName
-
-    switch (this.props.shift) {
-      case 1:
-        shiftName = 'Monday'
-        break
-      case 2:
-        shiftName = 'Tuesday'
-        break
-      case 3:
-        shiftName = 'Wednesday'
-        break
-      case 4:
-        shiftName = 'Thursday'
-        break
-      case 5:
-        shiftName = 'Friday'
-        break
-      case 6:
-        shiftName = 'Saturday'
-        break
-      default:
-        shiftName = 'Sunday'
-        break
-    }
+    const shiftName = getWeekDay(this.props.shift)
 
     Communication.text(this.props.phone, `Your shift is on: ${shiftName}`)
   }
 
-  onFire () {
+  onRequestOpen () {
+    this.setState({modalOpen: true})
+  }
 
+  onAcceptFire () {
+    this.setState({modalOpen: false})
+    this.props.deleteEmployee(this.props.uid)
+  }
+
+  onDeclineFire () {
+    this.setState({modalOpen: false})
   }
 
   render () {
@@ -73,6 +66,14 @@ class EmployeeUpdate extends Component {
 
     return (
       <Card>
+        <Confirm
+          open={this.state.modalOpen}
+          onAccept={this.onAcceptFire}
+          onDecline={this.onDeclineFire}
+        >
+          Are you sure want to fire this person?
+        </Confirm>
+
         <EmployeeForm {...{employeeName, phone, shift}} />
 
         <CardSection>
@@ -84,7 +85,7 @@ class EmployeeUpdate extends Component {
         </CardSection>
 
         <CardSection>
-          <Button text='Fire' onPress={this.onFire} />
+          <Button text='Fire' onPress={this.onRequestOpen} />
         </CardSection>
       </Card>
     )
@@ -98,7 +99,8 @@ EmployeeUpdate.propTypes = {
   shift: PropTypes.number,
   saveEmployee: PropTypes.func,
   changeText: PropTypes.func,
-  employee: PropTypes.object
+  employee: PropTypes.object,
+  deleteEmployee: PropTypes.func
 }
 
 const mapStateToProps = ({employeeForm}) => ({
@@ -110,7 +112,8 @@ const mapStateToProps = ({employeeForm}) => ({
 
 const mapDispatchToProps = {
   changeText: actions.changeText,
-  saveEmployee: actions.updateEmployee
+  saveEmployee: actions.updateEmployee,
+  deleteEmployee: actions.deleteEmployee
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeUpdate)

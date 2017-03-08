@@ -60,3 +60,14 @@ export const updateEmployee = payload => dispatch => {
   })
   .catch(saveEmployeeRejected(dispatch))
 }
+
+export const deleteEmployee = uid => dispatch => {
+  const {currentUser} = firebase.auth()
+
+  firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+  .remove()
+  .then(() => {
+    Actions.employeeList({type: 'reset'})
+  })
+  .catch(() => {})
+}
